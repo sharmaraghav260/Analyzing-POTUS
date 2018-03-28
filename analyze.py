@@ -17,16 +17,23 @@ Trump_Tweet = ('THE SECOND AMENDMENT WILL NEVER BE REPEALED! As much as'
 ' of former Supreme Court Justice Stevens, NO WAY. We need more Republicans'
 ' in 2018 and must ALWAYS hold the Supreme Court!')
 
-# Tokenize into words the given tweet
-words = nltk.word_tokenize(Trump_Tweet)
+def execute():
+    # Tokenize into words the given tweet
+    words = nltk.word_tokenize(Trump_Tweet)
 
-# Cleanse the data and remove stop words
-Stop_Words = stopwords.words('english') + list(string.punctuation)
+    # Cleanse the data and remove stop words
+    Stop_Words = stopwords.words('english') + list(string.punctuation)
 
-Filtered_Words = [w for w in words if w not in Stop_Words]
+    Filtered_Words = [w for w in words if w not in Stop_Words]
 
-# Feature engineer Word_Count and Word_Class
-Word_Counter = Counter(Filtered_Words)
+    # Feature engineer Word_Count and Word_Class
+    Word_Counter = Counter(Filtered_Words)
+
+    # Print out relevant results
+    for word, count in Word_Counter.most_common():
+        Word_Class = get_word_class(word)
+        row = [word, count, Word_Class]
+        print(row)
 
 def get_word_class(word):
     # Initialize the Word Class variable
@@ -43,8 +50,5 @@ def get_word_class(word):
     
     return Word_Class
 
-# Print out relevant results
-for word, count in Word_Counter.most_common():
-    Word_Class = get_word_class(word)
-    row = [word, count, Word_Class]
-    print(row)
+if __name__ == '__main__':
+    execute()
