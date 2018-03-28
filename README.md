@@ -26,3 +26,5 @@ The 20 most common words tweeted by Mr. President are :
 | time      | 153       | Noun      |
 | democrats | 144       | Noun      |
 | new       | 144       | Adjective |
+
+![](graphs/Figure_1.png?raw=true)

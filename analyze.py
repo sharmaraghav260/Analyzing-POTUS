@@ -58,10 +58,22 @@ def get_word_class(word):
     
     return Word_Class
 
+def top20(count_all):
+    file = open('t20.txt', 'w')
+    # Print out relevant results
+    for word, count in count_all.most_common(20):
+        Word_Class = get_word_class(word)
+        row = [word, count, Word_Class]
+        file.write(" ".join(str(e) for e in row)+"\n")
+        print(row)
+
+    file.close()
+
 if __name__ == '__main__':
     count_all = Counter()
     tweets = open("tweets.txt", "r")
     for tweet in tweets:
         execute(tweet, count_all)
 
-    recording_results(count_all)
+    #recording_results(count_all)
+    top20(count_all)
