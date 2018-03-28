@@ -1,5 +1,6 @@
 import nltk
 import string
+import re
 from collections import Counter
 from nltk.corpus import stopwords    
 from nltk.corpus import wordnet as wn
@@ -17,23 +18,30 @@ Trump_Tweet = ('THE SECOND AMENDMENT WILL NEVER BE REPEALED! As much as'
 ' of former Supreme Court Justice Stevens, NO WAY. We need more Republicans'
 ' in 2018 and must ALWAYS hold the Supreme Court!')
 
-def execute():
+results = []
+more_stop_words = ["rt", '...',"'s", "n't", "’", "“", "”","''","``","i","amp","i","the","it","https"]
+# Cleanse the data and remove stop words
+Stop_Words = stopwords.words('english') + list(string.punctuation) + more_stop_words
+
+def execute(tweet, count_all):
     # Tokenize into words the given tweet
-    words = nltk.word_tokenize(Trump_Tweet)
+    words = nltk.word_tokenize(tweet)
 
-    # Cleanse the data and remove stop words
-    Stop_Words = stopwords.words('english') + list(string.punctuation)
-
-    Filtered_Words = [w for w in words if w not in Stop_Words]
+    Filtered_Words = [w.lower() for w in words if w.lower() not in Stop_Words and not w.startswith('//')]
 
     # Feature engineer Word_Count and Word_Class
-    Word_Counter = Counter(Filtered_Words)
+    count_all.update(Filtered_Words)
 
+def recording_results(count_all):
+    file = open('result.txt', 'w')
     # Print out relevant results
-    for word, count in Word_Counter.most_common():
+    for word, count in count_all.most_common():
         Word_Class = get_word_class(word)
         row = [word, count, Word_Class]
+        file.write(" ".join(str(e) for e in row)+"\n")
         print(row)
+
+    file.close()
 
 def get_word_class(word):
     # Initialize the Word Class variable
@@ -51,4 +59,9 @@ def get_word_class(word):
     return Word_Class
 
 if __name__ == '__main__':
-    execute()
+    count_all = Counter()
+    tweets = open("tweets.txt", "r")
+    for tweet in tweets:
+        execute(tweet, count_all)
+
+    recording_results(count_all)
