@@ -1,7 +1,7 @@
 # Analyzing-POTUS
 Analyzing tweets from the President of The United States for the past year (March 29, 2017 to March 28, 2018) and see what the data looks like.
 
-#Results
+# Results
 The 20 most common words tweeted by Mr. President are :
 
 | Word      | Frequency | Class     |
