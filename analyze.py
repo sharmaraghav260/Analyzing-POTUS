@@ -2,12 +2,13 @@ import nltk
 import string
 from collections import Counter
 from nltk.corpus import stopwords    
-from nltk.corpus import wordnet as wordnet
+from nltk.corpus import wordnet as wn
 
 WORD_CLASS = {
     "n": "Noun",
     "v": "Verb",
     "a": "Adjective",
+    "s": "Adjective Satellite",
     "r": "Adverb"
 }
 
@@ -24,4 +25,26 @@ Stop_Words = stopwords.words('english') + list(string.punctuation)
 
 Filtered_Words = [w for w in words if w not in Stop_Words]
 
-print(Filtered_Words)
+# Feature engineer Word_Count and Word_Class
+Word_Counter = Counter(Filtered_Words)
+
+def get_word_class(word):
+    # Initialize the Word Class variable
+    Word_Class = None
+
+    # Check if word exists in the data package
+    if len(wn.synsets(word)) > 0:
+        # Get word class
+        Word_Class = wn.synsets(word)[0].pos()
+        # Convert key to word class
+        Word_Class = WORD_CLASS[Word_Class]
+    else:
+        pass
+    
+    return Word_Class
+
+# Print out relevant results
+for word, count in Word_Counter.most_common():
+    Word_Class = get_word_class(word)
+    row = [word, count, Word_Class]
+    print(row)
